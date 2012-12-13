@@ -1,0 +1,36 @@
+<xsd:schema targetNamespace="http://www.tut.fi/wsdl/SomeService"
+			elementFormDefault="qualified"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:tns="http://www.tut.fi/wsdl/SomeService">
+
+			<xsd:element name="OutputElementOne" type="xsd:string" />
+			<xsd:element name="InputElementOne">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="K1" type="xsd:double" />
+						<xsd:element name="K2" type="xsd:double" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="OperationTwoResponse" type="xsd:string" />
+			<xsd:element name="OperationTwo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="param" type="xsd:double" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+
+			<xsd:complexType name="somethingHappenedType">
+				<xsd:sequence>
+					<xsd:element name="what" type="xsd:string" />
+					<xsd:element name="where" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:element name="somethingHappened" type="tns:somethingHappenedType" />
+
+
+		</xsd:schema>

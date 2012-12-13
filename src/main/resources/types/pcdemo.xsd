@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.tut.fi/fast/plantcockpit" 
+	xmlns:tns="http://www.tut.fi/fast/plantcockpit"
+	elementFormDefault="qualified">
+
+	<xsd:element name="StationID" type="xsd:long" />
+	<xsd:element name="WPID" type="xsd:long" />
+	<xsd:element name="LabourID" type="xsd:long" />
+	<xsd:element name="TimeStamp" type="xsd:double" />
+	<xsd:element name="EventSourceComponent" type="xsd:string" />
+
+	<xsd:simpleType name="StationEventType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Alarm" />
+			<xsd:enumeration value="AlarmCleared" />
+			<xsd:enumeration value="Warning" />
+			<xsd:enumeration value="WarningCleared" />
+			<xsd:enumeration value="Error" />
+			<xsd:enumeration value="ErrorCleared" />
+			<xsd:enumeration value="Blocked" />
+			<xsd:enumeration value="UnBlocked" />
+			<xsd:enumeration value="Starving" />
+			<xsd:enumeration value="UnStarving" />
+			<xsd:enumeration value="HeartBeat" />
+			<xsd:enumeration value="HeartBeatresponse" />
+			<xsd:enumeration value="NoEvent" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StationStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Processing" />
+			<xsd:enumeration value="Waiting" />
+			<xsd:enumeration value="Ready" />
+			<xsd:enumeration value="Idle" />
+			<xsd:enumeration value="Started" />
+			<xsd:enumeration value="Stoped" />
+			<xsd:enumeration value="Rested" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="WPStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="InProcessing" />
+			<xsd:enumeration value="TransferingIN" />
+			<xsd:enumeration value="TransferingOut" />
+			<xsd:enumeration value="Pause" />
+			<xsd:enumeration value="NoWorkPiece" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LabourActionType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ManualStart" />
+			<xsd:enumeration value="ManualStop" />
+			<xsd:enumeration value="ManualReset" />
+			<xsd:enumeration value="AlramClear" />
+			<xsd:enumeration value="ErrorClear" />
+			<xsd:enumeration value="WarningClear" />
+			<xsd:enumeration value="UnBlockClear" />
+			<xsd:enumeration value="8-UnStarvingClear" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="WPColorType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Black" />
+			<xsd:enumeration value="NonBlack" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="WPQualityType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OK" />
+			<xsd:enumeration value="Defected" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="StationType">
+		<xsd:sequence>
+			<xsd:element ref="tns:StationID" />
+			<xsd:element ref="tns:TimeStamp" />
+			<xsd:element name="StationEvent" type="tns:StationEventType" />
+			<xsd:element ref="tns:EventSourceComponent" />
+			<xsd:element name="StationType" type="tns:StationStatusType" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="WorkPieceType">
+		<xsd:sequence>
+			<xsd:element ref="tns:WPID" />
+			<xsd:element ref="tns:StationID" />
+			<xsd:element ref="tns:TimeStamp" />
+			<xsd:element name="WPColor" type="tns:WPColorType" />
+			<xsd:element name="WPQuality" type="tns:WPQualityType" />
+			<xsd:element name="WPStatus" type="tns:WPStatusType" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LabourType">
+		<xsd:sequence>
+			<xsd:element ref="tns:LabourID" />
+			<xsd:element ref="tns:StationID" />
+			<xsd:element ref="tns:TimeStamp" />
+			<xsd:element name="LabourAction" type="tns:LabourActionType" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SomethingType">
+		<xsd:sequence>
+			<xsd:element name="athing" type="xsd:string" />
+			<xsd:element name="bthing" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="Something" type="tns:SomethingType"/>
+
+	<xsd:element name="Labour" type="tns:LabourType"/>
+	<xsd:element name="WorkPiece" type="tns:WorkPieceType"/>
+	<xsd:element name="Station" type="tns:StationType"/>
+
+
+</xsd:schema>

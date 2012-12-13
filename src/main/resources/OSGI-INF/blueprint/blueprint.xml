@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint">
+		<route>
+			<from
+				uri="jetty:http://{{hostName}}:{{hostPort}}/{{baseUrl}}?matchOnUriPrefix=true" />
+			<process ref="droolsTest" />
+		</route>
+		<route>
+			<from
+				uri="jetty:http://{{hostName}}:{{hostPort}}/{{baseUrl}}/clear?matchOnUriPrefix=true" />
+			<bean ref="droolsTest" method="clearCachedFiles" />
+		</route>
+		<route>
+			<from uri="{{deployDirectory}}?readLock=rename" />
+			<choice>
+				<when>
+					<simple>${file:ext} == 'drl'</simple>
+					<bean ref="droolsTest" method="newFileDropped" />
+				</when>
+				<when>
+					<simple>${file:ext} == 'xsd'</simple>
+					<bean ref="droolsTest" method="newFileDropped" />
+				</when>
+			</choice>
+		</route>
+	</camelContext>
+
+	<cm:property-placeholder persistent-id="fi.tut.fast.smx.droolstest">
+		<cm:default-properties>
+			<cm:property name="some.property" value="someString" />
+			<cm:property name="hostName" value="localhost" />
+			<cm:property name="baseUrl" value="droolsTest" />
+			<cm:property name="hostPort" value="8008" />
+			<cm:property name="deployDirectory" value="file://DroolsTestDeployFolder" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+
+	<bean id="droolsTest" class="fi.tut.fast.smx.DroolsTest"
+		init-method="init" destroy-method="destroy">
+		<property name="someProperty" value="${some.property}" />
+		<property name="context" ref="blueprintBundleContext" />
+	</bean>
+
+</blueprint>

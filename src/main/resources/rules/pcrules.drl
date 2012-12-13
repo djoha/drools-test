@@ -1,0 +1,41 @@
+package fi.tut.fast.plantcockpit.rules
+
+import fi.tut.fast.plantcockpit.Labour
+import fi.tut.fast.plantcockpit.Something
+
+rule "Test PC rule"
+
+	duration 5000
+
+    when
+        $LABOUR : Labour ( labourID == 1234 && labourAction == "something" );
+    then
+
+        System.out.format(">>> %d : Labour Action [%s] : [%d]\n",
+        								$LABOUR.getLabourID(),
+        								$LABOUR.getLabourAction(),
+        								$LABOUR.getStationID());
+		
+		channels["PC_OUTPUT_CHANNEL"].send("Seemed to work.");
+		
+		retract($LABOUR);
+		
+end
+
+rule "ticktock"
+	timer(int: 1s 180s)
+	
+	when
+		eval(true)
+	then
+		System.out.println("tick...");
+end
+
+rule "dosomthing"
+
+	when 
+		$S : Something();
+	then
+		System.out.println("Something detected: athing=  " +  $S.getAthing() + " , bthing = " + $S.getBthing());
+		
+end

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.plantcockpit.eu/fast/festo"
+           xmlns:tns="http://www.plantcockpit.eu/fast/festo"
+           elementFormDefault="qualified">
+
+  <xs:element name="StationId" type="xs:string"/>
+  <xs:element name="Timestamp" type="xs:long"/>
+  <xs:element name="WorkpieceId" type="xs:string"/>
+  <xs:element name="Response" type="xs:string"/>
+
+  <xs:simpleType name="WorkpieceStatusCodeType">
+          <xs:restriction base="xs:token">
+                  <xs:enumeration value="TRANSFERIN" />
+                  <xs:enumeration value="PROCESSING" />
+                  <xs:enumeration value="WAITING" />
+                  <xs:enumeration value="TRANSFEROUT" />
+                  <xs:enumeration value="NO_WORKPIECE" />
+          </xs:restriction>
+  </xs:simpleType>
+
+    <xs:complexType name="OperatorInputType">
+      <xs:sequence>
+        <xs:element ref="tns:StationId"/>
+        <xs:element name="Type" type="xs:string"/>
+        <xs:element name="Value" type="xs:string"/>
+        <xs:element ref="tns:Timestamp"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="WorkstationEventType">
+      <xs:sequence>
+        <xs:element ref="tns:StationId"/>
+        <xs:element name="EventType" type="xs:string"/>
+        <xs:element name="Value" type="xs:string"/>
+        <xs:element ref="tns:Timestamp"/>
+      </xs:sequence>
+    </xs:complexType>
+  
+    <xs:complexType name="WorkpieceStatusType">
+      <xs:sequence>
+        <xs:element ref="tns:StationId"/>
+        <xs:element ref="tns:WorkpieceId"/>
+        <xs:element name="Status" type="tns:WorkpieceStatusCodeType"/>
+        <xs:element ref="tns:Timestamp"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+     <xs:complexType name="WorkpiecePropertiesType">
+      <xs:sequence>
+        <xs:element ref="tns:StationId"/>
+        <xs:element ref="tns:WorkpieceId"/>
+        <xs:element name="EventType" type="xs:string"/>
+        <xs:element name="Details" type="xs:string"/>
+        <xs:element ref="tns:Timestamp"/>
+      </xs:sequence>
+    </xs:complexType>
+  
+
+  <xs:element name="OperatorInput" type="tns:OperatorInputType"/>
+  <xs:element name="WorkstationEvent" type="tns:WorkstationEventType"/>
+  <xs:element name="WorkpieceStatus" type="tns:WorkpieceStatusType"/>
+  <xs:element name="WorkpieceProperties" type="tns:WorkpiecePropertiesType"/>
+  
+  <xs:element name="EnergyEvent">
+     <xs:complexType>
+      <xs:sequence>
+        <xs:element name="EventType" type="xs:string"/>
+        <xs:element name="Value" type="xs:int"/>
+        <xs:element ref="tns:Timestamp"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>
