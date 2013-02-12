@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
+	<env:Header>
+		<wsa:Action xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">http://www.tut.fi/wsdl/SomeService/SomeServicePortType/OperationOneResponse
+		</wsa:Action>
+		<wsa:MessageID xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">urn:uuid:136fbda8-7749-439e-ad3f-9986b848a77c
+		</wsa:MessageID>
+		<wsa:RelatesTo xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">urn:uuid:6648d070-3885-11e2-8028-d7edce9ed125
+		</wsa:RelatesTo>
+		<wsa:From xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+			<wsa:Address>http://localhost:46835/dpws/service1</wsa:Address>
+		</wsa:From>
+	</env:Header>
+	<env:Body>
+		<tns:OutputElementOne xmlns:tns="http://www.tut.fi/wsdl/SomeService">abc
+		</tns:OutputElementOne>
+	</env:Body>
+</env:Envelope>
+
+//
+<xsd:complexType name="LabourType">
+	<xsd:sequence>
+		<xsd:element ref="tns:LabourID" />
+		<xsd:element ref="tns:StationID" />
+		<xsd:element ref="tns:TimeStamp" />
+		<xsd:element name="LabourAction" type="tns:LabourActionType" />
+	</xsd:sequence>
+</xsd:complexType>
+
+http://localhost:8008/droolsTest
+
+<Labour xmlns="http://www.tut.fi/fast/plantcockpit">
+	<LabourID>123</LabourID>
+	<StationID>5678</StationID>
+	<TimeStamp>46556</TimeStamp>
+	<LabourAction>ManualReset</LabourAction>
+</Labour>
+
+<WorkPiece xmlns="http://www.tut.fi/fast/plantcockpit">
+   <WPID>1</WPID>
+   <StationID>1</StationID>
+   <TimeStamp>4</TimeStamp>
+   <WPColor>NonBlack</WPColor>
+   <WPQuality>Defected</WPQuality>
+   <WPStatus>NoWorkPiece</WPStatus>
+</WorkPiece>
+
+//WorkstationStatus message examples to send with ActiveMQ:
+
+<tns:WorkstationStatus xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>DU</tns:StationId>
+	<tns:Status>READY</tns:Status>
+	<tns:Timestamp>46556</tns:Timestamp>
+</tns:WorkstationStatus>
+
+<WorkstationStatus xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>TU</tns:StationId>
+	<tns:Status>WAITING</tns:Status>
+	<tns:Timestamp>46556</tns:Timestamp>
+</WorkstationStatus>
+
+<WorkstationStatus xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>TU</tns:StationId>
+	<tns:Status>PROCESSING</tns:Status>
+	<tns:Timestamp>46556</tns:Timestamp>
+</WorkstationStatus>
+
+//-------------------------------------------------------------------------------
+
+//OperatorInput message examples to send with ActiveMQ:
+
+<OperatorInput xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>DU</tns:StationId>
+	<tns:Type>RESET_BUTTON</tns:Type>
+	<tns:Value>anything</tns:Value>
+	<tns:Timestamp>41256</tns:Timestamp>
+</OperatorInput>
+
+<OperatorInput xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>DU</tns:StationId>
+	<tns:Type>START_BUTTON</tns:Type>
+	<tns:Value>anything</tns:Value>
+	<tns:Timestamp>41256</tns:Timestamp>
+</OperatorInput>
+
+<OperatorInput xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>BU</tns:StationId>
+	<tns:Type>STOP_BUTTON</tns:Type>
+	<tns:Value>anything</tns:Value>
+	<tns:Timestamp>41256</tns:Timestamp>
+</OperatorInput>
+
+//-------------------------------------------------------------------------------
+
+//WorkstationEvent message examples to send with ActiveMQ:
+
+<WorkstationEvent xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>Buffer</tns:StationId>
+	<tns:EventType>PIECES_STORED</tns:EventType>
+	<tns:Value>8</tns:Value>
+	<tns:Timestamp>100</tns:Timestamp>
+</WorkstationEvent>
+
+//-------------------------------------------------------------------------------
+
+//WorkpieceStatus message examples to send with ActiveMQ:
+
+<tns:WorkpieceStatus xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>PU</tns:StationId>
+	<tns:WorkpieceId>8</tns:WorkpieceId>
+	<tns:Status>TRANSFERIN</tns:Status>
+	<tns:Timestamp>42073</tns:Timestamp>
+</tns:WorkpieceStatus>
+
+<WorkpieceStatus xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>BU</tns:StationId>
+	<tns:WorkpieceId>0</tns:WorkpieceId>
+	<tns:Status>NO_WORKPIECE</tns:Status>
+	<tns:Timestamp>10000</tns:Timestamp>
+</WorkpieceStatus>
+
+<WorkpieceStatus xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>DU</tns:StationId>
+	<tns:WorkpieceId>2</tns:WorkpieceId>
+	<tns:Status>PROCESSING</tns:Status>
+	<tns:Timestamp>42073</tns:Timestamp>
+</WorkpieceStatus>
+
+<tns:WorkpieceStatus xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>DU</tns:StationId>
+	<tns:WorkpieceId>2</tns:WorkpieceId>
+	<tns:Status>TRANSFERIN</tns:Status>
+	<tns:Timestamp>42073</tns:Timestamp>
+</tns:WorkpieceStatus>
+
+//-------------------------------------------------------------------------------
+
+//WorkpieceProperties message examples to send with ActiveMQ:
+
+<WorkpieceProperties xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>TU</tns:StationId>
+	<tns:WorkpieceId>1</tns:WorkpieceId>
+	<tns:EventType>Message received.</tns:EventType>
+	<tns:Details>non black</tns:Details>
+	<tns:Timestamp>40965</tns:Timestamp>
+</WorkpieceProperties>
+
+<WorkpieceProperties xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>testing</tns:StationId>
+	<tns:WorkpieceId>START_BUTTON</tns:WorkpieceId>
+	<tns:EventType>anything</tns:EventType>
+	<tns:Details>whatever</tns:Details>
+	<tns:Timestamp>40965</tns:Timestamp>
+</WorkpieceProperties>
+
+<WorkpieceProperties xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:StationId>testing</tns:StationId>
+	<tns:WorkpieceId>START_BUTTON</tns:WorkpieceId>
+	<tns:EventType>Message received</tns:EventType>
+	<tns:Details>black</tns:Details>
+	<tns:Timestamp>45862</tns:Timestamp>
+</WorkpieceProperties>
+
+//-------------------------------------------------------------------------------
+
+//EnergyEvent message examples to send with ActiveMQ:
+
+<EnergyEvent xmlns:tns="http://www.plantcockpit.eu/fast/festo">
+	<tns:EventType>POWER FACTOR</tns:EventType>
+	<tns:Value>0123</tns:Value>
+	<tns:Timestamp>48529</tns:Timestamp>
+</EnergyEvent>
+
+//-------------------------------------------------------------------------------

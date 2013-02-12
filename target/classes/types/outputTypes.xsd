@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.plantcockpit.eu/fast/festo/vis"
+           xmlns:tns="http://www.plantcockpit.eu/fast/festo/vis"
+           elementFormDefault="qualified">
+
+  <xs:element name="WorkpieceID" type="xs:string"/>
+  <xs:element name="StationID" type="xs:string"/>
+  <xs:element name="Attribute" type="xs:string"/>
+  <xs:element name="Value" type="xs:string"/>
+
+    <xs:complexType name="EditWPAttributeType">
+      <xs:sequence>
+        <xs:element ref="tns:WorkpieceID"/>
+        <xs:element ref="tns:Attribute"/>
+        <xs:element ref="tns:Value"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="EditStationAttributeType">
+      <xs:sequence>
+        <xs:element ref="tns:StationID"/>
+        <xs:element ref="tns:Attribute"/>
+        <xs:element ref="tns:Value"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="EditEnergyAttributeType">
+      <xs:sequence>
+        <xs:element ref="tns:Attribute"/>
+        <xs:element ref="tns:Value"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+  <xs:element name="EditWPAttribute" type="tns:EditWPAttributeType"/>
+  <xs:element name="EditStationAttribute" type="tns:EditStationAttributeType"/>
+  <xs:element name="EditEnergyAttribute" type="tns:EditEnergyAttributeType"/>
+    
+</xs:schema>

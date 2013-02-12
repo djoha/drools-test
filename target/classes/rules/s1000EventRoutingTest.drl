@@ -1,0 +1,37 @@
+package fi.tut.fast.rules
+
+import fi.tut.wsdl.someservice.SomethingHappened
+
+
+
+declare EventCounter
+	count : int
+	id : String
+end
+
+
+
+rule "init event counter"
+	when
+		not EventCounter()
+	then
+		EventCounter ctr = new EventCounter();
+		ctr.setCount(0);
+		ctr.setId("Station2");
+		insert(ctr);
+end
+
+
+
+rule "event rule"
+
+	when 
+		$P : SomethingHappened()
+		$C : EventCounter( id == "Station2")
+	then
+	
+		$C.setCount($C.getCount()+1);
+		System.out.format("New Event: what: %s where: %s \n", $P.getWhat(), $P.getWhere());
+		System.out.println("Now we have " + $C.getCount() + " events.");
+		
+end

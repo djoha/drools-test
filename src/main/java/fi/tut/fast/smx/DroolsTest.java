@@ -52,11 +52,7 @@ import com.sun.tools.xjc.Options;
 public class DroolsTest implements Processor {
 
     private static final transient Logger logger = Logger.getLogger(DroolsTest.class.getName());
-	private String someProperty = "thing";
 	public static final String JAXBSYSTEM_ID = "DROOLSXSD"; 
-
-	public static final String MODEL_FILE_NAME = "model.xsd";
-	public static final String RULES_FILE_NAME = "rules.xsd";
 	public static final String XSD_FILE_EXT = "xsd";
 	public static final String DRL_FILE_EXT = "drl";
 	public static final String OUTPUT_CHANNEL_NAME = "PC_OUTPUT_CHANNEL";
@@ -293,7 +289,6 @@ public class DroolsTest implements Processor {
 	 *   Getters and Setters for Bean Injection
 	 * 
 	 */
-
 	
 	public BundleContext getContext() {
 		return context;
@@ -303,12 +298,4 @@ public class DroolsTest implements Processor {
 		this.context = context;
 	}
 
-	public String getSomeProperty() {
-		return someProperty;
-	}
-
-	public void setSomeProperty(String someProperty) {
-		this.someProperty = someProperty;
-	}
-	
 }

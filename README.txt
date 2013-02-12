@@ -8,12 +8,14 @@ Drools Block
 
 Instructions:  
 
-1) Download Apache ServiceMix
-2) Install required features and bundles
+1) Download and run Apache ServiceMix
+		As of Feb 2013, ServiceMix requires Java 6.  So make sure Java 6 is installed, and the JAVA_HOME environment variable points to jre6 home.
+
+2) Start ServiceMix, and install required features and bundles:
 	
 	features:install servicemix-drools
 	features:install camel-jetty
-	osgi:install mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-io
+	osgi:install -s mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-io
 
 3) Edit the fi.tut.fast.smx.droolstest.cfg file if you want to change any default parameters.
 

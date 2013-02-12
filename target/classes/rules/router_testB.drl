@@ -1,0 +1,26 @@
+
+package fi.tut.fast.smx
+
+import eu.plantcockpit.fast.festo.OperatorInput;
+
+rule "JAXB Rule"
+	when
+		eval(true)
+	then
+		OperatorInput op = new OperatorInput();
+		op.setStationId("AnotherStation");
+		op.setType("BUTTONPRESS");
+		op.setValue("AboutHalfWay");
+		op.setTimestamp(45678);
+	
+		channels["PC_OUTPUT_CHANNEL"].send(op);
+	
+end
+
+rule "Timer Test"
+		timer (int: 1s 10s)
+	when
+		eval(true)
+	then
+		System.out.println("ding");
+end

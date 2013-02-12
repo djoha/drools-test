@@ -1,0 +1,23 @@
+package fi.tut.fast.smx
+
+import eu.plantcockpit.fast.plantcockpit.Station
+
+rule "Workpiece Status rule" // This rule checks the status of workpieces in all stations
+
+    when
+        $STATION : Station ( $STAT_ID : stationId, $WOR_ID : workpieceId, $STAT : status.value, $PRO_T : timestamp);
+
+    then
+
+        System.out.println(">>> [ "+$STAT_ID+" ] : Workpiece [ ID = "+$WOR_ID+" ] : [ STATUS = "+$STAT+" ]");
+
+		WorkstationStatus wsst = new WorkstationStatus();
+		wsst.setStationId("AStation");
+		wsst.setStatus("WAITING");
+		wsst.setTimestamp(12345);
+		
+		channels["PC_OUTPUT_CHANNEL"].send(wsst);
+		channels["PC_OUTPUT_CHANNEL"].send("Seemed to work.");
+
+end
+

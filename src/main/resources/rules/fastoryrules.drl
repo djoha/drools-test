@@ -1,0 +1,20 @@
+
+
+import fi.tut.pe.fast.wsdl.conveyorservice.SimpleVariable
+
+
+declare SimpleVariable
+	@role( event )
+	@expires( 2m )
+end
+
+
+rule "test notificationMessage"
+
+	when 
+		$m : SimpleVariable()
+	then
+		System.out.format("SimpleVariable Received:\n cell:%s  msgID : %s\n",$m.getCellID(),$m.getMsgID());
+		System.out.println("");
+		retract($m);
+end
