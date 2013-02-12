@@ -4,6 +4,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
+	<!-- Routing:	HTTP Endpoint for input message types and clearing cached files
+				Hot Deploy Folder in ServiceMix directory for Schemas and Rules -->
 
 	<camelContext xmlns="http://camel.apache.org/schema/blueprint">
 		<route>
@@ -31,6 +33,9 @@
 		</route>
 	</camelContext>
 
+	<!-- Setting default Properties -->
+	<!-- To override the properties, use a config file in the $SERVICEMIX_HOME/etc directory called
+	fi.tut.fast.smx.droolstest.cfg -->
 	<cm:property-placeholder persistent-id="fi.tut.fast.smx.droolstest">
 		<cm:default-properties>
 			<cm:property name="hostName" value="192.168.2.135" />
@@ -40,6 +45,7 @@
 		</cm:default-properties>
 	</cm:property-placeholder>
 
+	<!-- Initializing Drools -->
 	<bean id="droolsTest" class="fi.tut.fast.smx.DroolsTest"
 		init-method="init" destroy-method="destroy">
 		<property name="context" ref="blueprintBundleContext" />

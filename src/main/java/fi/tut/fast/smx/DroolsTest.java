@@ -1,3 +1,14 @@
+/**
+ *   DroolsTest.java
+ *   
+ *   Johannes Minor  (johannes.minor@tut.fi)
+ *   
+ *   This bean:
+ *  	- sets up and configures the Drools session
+ *  	- handles incoming XML messages on the HTTP endpoint
+ *  	- receives XSD and DRL files in the hot deploy folder in the servicemix directory for reconfiguring the session 
+ */
+
 package fi.tut.fast.smx;
 
 import java.io.File;
@@ -46,15 +57,15 @@ import org.xml.sax.InputSource;
 import com.sun.tools.xjc.Language;
 import com.sun.tools.xjc.Options;
 
-
-
-
 public class DroolsTest implements Processor {
 
     private static final transient Logger logger = Logger.getLogger(DroolsTest.class.getName());
+    // System ID used for compiling schema types
 	public static final String JAXBSYSTEM_ID = "DROOLSXSD"; 
+	// Constants to define expected file extensions for schema and rules files
 	public static final String XSD_FILE_EXT = "xsd";
 	public static final String DRL_FILE_EXT = "drl";
+	//  Output Channel Name
 	public static final String OUTPUT_CHANNEL_NAME = "PC_OUTPUT_CHANNEL";
 
 	private StatefulKnowledgeSession ksession;	
@@ -62,13 +73,17 @@ public class DroolsTest implements Processor {
 	private Unmarshaller unmarshaller;
 	private JAXBIntrospector introspector;
 
-	
+	// For interacting with servicemix
 	private BundleContext context;
+
+	// Shutdown DroolsTest
 	public void destroy() throws Exception {
     	logger.info("OSGi Bundle Stopping.");
     	ksession.dispose();
 	}
+	
 
+	//  Setting up JAXB Schema Compiler Options
 	private Options getOptions() throws IOException{
     	// Configure XJC options
     	//  Simple Binding for adding XMLRootElement annotations to Elements.
@@ -84,6 +99,7 @@ public class DroolsTest implements Processor {
 		return xjcOpts;
 	}
 	
+	// Initialize the drools Block
 	public void init() throws Exception {
 
 		System.out.println("Rules Block Started...");
@@ -99,12 +115,14 @@ public class DroolsTest implements Processor {
 		
 	}
 
+	//  Process an incoming XML message from the HTTP Endpoint
 	@Override
 	public void process(Exchange exchange) throws Exception {
 				
-//		System.out.println(exchange.getIn().getBody(String.class));
+		// Convert XML to Java object
 		Object o = unmarshaller.unmarshal(exchange.getIn().getBody(InputStream.class));
 
+		// Inject the object into the Drools Working Memory
 		if(o instanceof JAXBElement){
 			System.out.println("Recieved JAXB Element: " + ((JAXBElement)o).getDeclaredType().getCanonicalName());
 			ksession.insert(((JAXBElement)o).getValue());
@@ -113,33 +131,40 @@ public class DroolsTest implements Processor {
 			ksession.insert(o);
 		}
 		
+		// Evaluate all rules
 		ksession.fireAllRules();
-		
+		// Send output response
 		exchange.getOut().setBody("Accepted.");
 		
 	}
 	
+	
+	// Refresh rules session when new XSD or DRL files are received.
 	private void refreshRulesSession() throws IOException, JAXBException, Exception {
 		
+		// Dispose of the old session if it exists.
 		if(ksession != null){
 			ksession.dispose();
 			ksession = null;
 		}
 		
+		// Get all the cached files
 		List<URL> modelFiles = getCachedFiles(XSD_FILE_EXT);
 		List<URL> rulesFiles = getCachedFiles(DRL_FILE_EXT);
 		
+		//  If there is no schema, do nothing.
 		if(modelFiles.isEmpty()){
 			System.out.println("No schemas loaded.");
 			return;
 		}
-
+		
+		// If there are no rules, do nothing.
 		if(rulesFiles.isEmpty()){
 			System.out.println("No Rules loaded.");
 			return;
 		}
 		
-    	// Multiple XSDs with Type Definitions
+    	// Loading XSDs with Type Definitions
         KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
         List<String> classList = new ArrayList<String>();
         for(URL url : modelFiles){
@@ -164,6 +189,7 @@ public class DroolsTest implements Processor {
     		}
         }
 
+        // Set up knowledge session
         knowledgeBase.addKnowledgePackages(builder.getKnowledgePackages()); 
 		ksession = knowledgeBase.newStatefulKnowledgeSession();
 		
@@ -206,6 +232,8 @@ public class DroolsTest implements Processor {
 		
 	}
 	
+	
+	// Store Schemas and rules in folder
 	private void cacheFile(Exchange exchange) throws FileNotFoundException, IOException{
 //		System.out.println(Arrays.toString(exchange.getIn().getHeaders().keySet().toArray(new String[]{})));
 		File rulesFile = context.getDataFile(exchange.getIn().getHeader(Exchange.FILE_NAME, String.class));
@@ -217,6 +245,7 @@ public class DroolsTest implements Processor {
 		fileIs.close();
 	}
 
+	// Handles new DRL and XSD files dropped into the hot folder
 	public void newFileDropped(Exchange exchange) {
 		
 		try {
@@ -243,6 +272,7 @@ public class DroolsTest implements Processor {
 		}
 	}
 
+	// Search cache for files of a certian extension
 	private List<URL> getCachedFiles(final String ext){
 		List<URL> files = new ArrayList<URL>();
 		File dir = context.getDataFile("");
@@ -263,7 +293,7 @@ public class DroolsTest implements Processor {
 		return files;
 	}
 	
-	
+	// Clear the file cache
 	public void clearCachedFiles(Exchange ex){
 		clearFileCache();
 		ex.getOut().setBody("CACHE CLEARED.");
