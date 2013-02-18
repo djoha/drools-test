@@ -31,6 +31,10 @@
 				</when>
 			</choice>
 		</route>
+		<route>
+			<from uri="direct:schedulerToController" />
+			<to uri="{{controllerEndpoint}}"/>
+		</route>
 	</camelContext>
 
 	<!-- Setting default Properties -->
@@ -38,10 +42,11 @@
 	fi.tut.fast.smx.droolstest.cfg -->
 	<cm:property-placeholder persistent-id="fi.tut.fast.smx.droolstest">
 		<cm:default-properties>
-			<cm:property name="hostName" value="192.168.2.135" />
+			<cm:property name="hostName" value="localhost" />
 			<cm:property name="baseUrl" value="droolsTest" />
 			<cm:property name="hostPort" value="8008" />
 			<cm:property name="deployDirectory" value="file://DroolsTestDeployFolder" />
+			<cm:property name="controllerEndpoint" value="log:MessageToController" />
 		</cm:default-properties>
 	</cm:property-placeholder>
 
