@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://www.tut.fi/fast/fastory" xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.tut.fi/fast/fastory">
+	<xsd:element name="Order">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" minOccurs="1" ref="tns:Process"/>
+			</xsd:sequence>
+		<xsd:attribute name="orderId" type="xsd:ID" use="required"/>
+		<xsd:attribute name="status" type="tns:OrderStatus" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="Process">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" minOccurs="1" ref="tns:ProcessStep"/>
+			</xsd:sequence>
+			<xsd:attribute name="processId" type="xsd:ID" use="required"/>
+			<xsd:attribute name="status" type="tns:ProcessStatus" use="required"/>
+			<xsd:attribute name="palletId" type="xsd:string"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="ProcessStep">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="operation" type="xsd:string"/>
+			</xsd:sequence>
+		<xsd:attribute name="status" type="tns:ProcessStepStatus" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:simpleType name="ProcessStepStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="WAITING"/>
+			<xsd:enumeration value="EXECUTING"/>
+			<xsd:enumeration value="COMPLETED"/>
+			<xsd:enumeration value="ERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ProcessStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="WAITING"/>
+			<xsd:enumeration value="EXECUTING"/>
+			<xsd:enumeration value="COMPLETED"/>
+			<xsd:enumeration value="ERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="OrderStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="WAITING"/>
+			<xsd:enumeration value="EXECUTING"/>
+			<xsd:enumeration value="COMPLETED"/>
+			<xsd:enumeration value="ERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

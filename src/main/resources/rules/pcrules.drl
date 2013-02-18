@@ -17,6 +17,7 @@ declare StationCounter
 	id : String
 end
 
+
 rule "init stationcounter"
 	when
 		not StationCounter()
@@ -26,7 +27,6 @@ rule "init stationcounter"
 		ctr.setId("Station2");
 		insert(ctr);
 end
-
 
 
 declare Counter
